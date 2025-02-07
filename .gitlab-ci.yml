@@ -1,0 +1,73 @@
+image: docker:27-cli
+
+stages:
+  - build
+  - deploy
+
+dev-build-job:
+  stage: build
+  variables:
+    IMAGE_TAG: dev-$CI_COMMIT_SHORT_SHA
+  before_script:
+    - mkdir -p $HOME/.docker
+    - echo $DOCKER_AUTH_CONFIG > $HOME/.docker/config.json
+    - echo "$DEV_ENV_FILE" > .env
+  script:
+    - echo "Build the docker image..."
+    - docker compose build dashboard
+    - docker compose push dashboard
+    - echo "Build complete."
+  only:
+    refs:
+      - main
+
+dev-deploy-job:
+  stage: deploy
+  variables:
+    DOCKER_HOST: tcp://10.44.44.2:2375
+    IMAGE_TAG: dev-$CI_COMMIT_SHORT_SHA
+  before_script:
+    - mkdir -p $HOME/.docker
+    - echo $DOCKER_AUTH_CONFIG > $HOME/.docker/config.json
+    - echo "$DEV_ENV_FILE" > .env
+  script:
+    - echo "Deploying application..."
+    - docker compose up -d dashboard
+    - echo "Application successfully deployed."
+  only:
+    refs:
+      - main
+
+prod-build-job:
+  stage: build
+  variables:
+    IMAGE_TAG: prod-$CI_COMMIT_SHORT_SHA
+  before_script:
+    - mkdir -p $HOME/.docker
+    - echo $DOCKER_AUTH_CONFIG > $HOME/.docker/config.json
+    - echo "$PROD_ENV_FILE" > .env
+  script:
+    - echo "Build the docker image..."
+    - docker compose build dashboard
+    - docker compose push dashboard
+    - echo "Build complete."
+  only:
+    refs:
+      - production
+
+prod-deploy-job:
+  stage: deploy
+  variables:
+    DOCKER_HOST: tcp://10.44.44.4:2375
+    IMAGE_TAG: prod-$CI_COMMIT_SHORT_SHA
+  before_script:
+    - mkdir -p $HOME/.docker
+    - echo $DOCKER_AUTH_CONFIG > $HOME/.docker/config.json
+    - echo "$PROD_ENV_FILE" > .env
+  script:
+    - echo "Deploying application..."
+    - docker compose up -d dashboard
+    - echo "Application successfully deployed."
+  only:
+    refs:
+      - production

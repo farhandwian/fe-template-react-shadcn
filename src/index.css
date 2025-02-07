@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --primary-brand-100: 257 67% 89%;
+    --primary-brand-200: 255 67% 80%;
+    --primary-brand-300: 254 47% 63%;
+    --primary-brand-400: 253 38% 44%;
+    --primary-brand-500: 252 58% 22%;
+    --primary-brand-600: 251 64% 18%;
+    --primary-brand-700: 249 68% 15%;
+    --primary-brand-800: 248 76% 12%;
+    --primary-brand-900: 248 83% 9%;
+    --secondary-brand-100: 55 96% 90%;
+    --secondary-brand-200: 54 98% 80%;
+    --secondary-brand-300: 53 97% 70%;
+    --secondary-brand-400: 52 96% 62%;
+    --secondary-brand-500: 51 96% 50%;
+    --secondary-brand-600: 50 97% 43%;
+    --secondary-brand-700: 49 98% 35%;
+    --secondary-brand-800: 49 99% 28%;
+    --secondary-brand-900: 48 100% 23%;
+    --error-100: 358 100% 90%;
+    --error-200: 358 100% 80%;
+    --error-300: 358 100% 70%;
+    --error-400: 358 100% 60%;
+    --error-500: 358 100% 67%;
+    --error-600: 358 80% 55%;
+    --error-700: 358 70% 45%;
+    --error-800: 358 60% 35%;
+    --error-900: 358 50% 25%;
+    --warning-100: 31 100% 90%;
+    --warning-200: 31 100% 80%;
+    --warning-300: 31 100% 70%;
+    --warning-400: 31 100% 60%;
+    --warning-500: 31 100% 55%;
+    --warning-600: 31 90% 45%;
+    --warning-700: 31 80% 35%;
+    --warning-800: 31 70% 25%;
+    --warning-900: 31 60% 15%;
+    --success-100: 117 65% 90%;
+    --success-200: 117 65% 80%;
+    --success-300: 117 65% 70%;
+    --success-400: 117 65% 65%;
+    --success-500: 117 65% 60%;
+    --success-600: 117 55% 50%;
+    --success-700: 117 45% 40%;
+    --success-800: 117 35% 30%;
+    --success-900: 117 25% 20%;
+    --info-100: 211 97% 90%;
+    --info-200: 211 97% 80%;
+    --info-300: 211 97% 70%;
+    --info-400: 211 97% 65%;
+    --info-500: 211 97% 62%;
+    --info-600: 211 85% 50%;
+    --info-700: 211 75% 40%;
+    --info-800: 211 65% 30%;
+    --info-900: 211 55% 20%;
+    --rdp-selected-color: 252 58% 22%;
+    --rdp-accent-color: 252 58% 22%;
+    --rdp-background-color: gray;
+    --background: 217 100% 96%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 252 58% 22%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.rs-picker-daterange .rs-picker-input-group {
+  @apply rounded-xl;
+}
+
+.rs-picker-daterange .rs-picker-input-group input {
+  @apply rounded-xl;
+}

@@ -1,0 +1,14 @@
+services:
+  dashboard:
+    image: registry.keenos.id/bbws-cc/cc-dashboard:${IMAGE_TAG}
+    build: .
+    env_file: .env
+    ports:
+      - "8002:80"
+    networks:
+      - cc-network
+    restart: always
+
+networks:
+  cc-network:
+    external: true
