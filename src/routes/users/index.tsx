@@ -1,9 +1,9 @@
-import UserDataTable from "@/components/features/users/user-data-table";
+// import UserDataTable from "@/components/features/users/user-data-table";
 import HeaderDashboard from "@/components/header-dashboard";
 import SidebarLayout from "@/components/sidebar-layout";
 import UserDetailsDialog from "@/components/user-details-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import UserIcon from "/src/assets/user-white-28.svg";
+// import UserIcon from "/src/assets/user-white-28.svg";
 
 export const Route = createFileRoute("/users/")({
   beforeLoad: async ({ context, location }) => {

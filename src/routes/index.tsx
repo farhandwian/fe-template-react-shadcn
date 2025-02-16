@@ -1,21 +1,13 @@
-import ActivityMonitoring from "@/components/features/dashboard/activity-monitoring";
-import AutonomousDrone from "@/components/features/dashboard/autonomus-drone";
-import Device from "@/components/features/dashboard/device";
-import EstimatedWaterAvailability from "@/components/features/dashboard/estimated-water-availability";
-import InternetSpeed from "@/components/features/dashboard/internet-speed";
-import MonitoringSysten from "@/components/features/dashboard/monitoring-system-alert";
-import Sijagacai from "@/components/features/dashboard/sijagacai";
-import Status from "@/components/features/dashboard/status";
-import Summary from "@/components/features/dashboard/summary";
-import TMAChart from "@/components/features/dashboard/tma-chart";
-import UnFulfilledDoors from "@/components/features/dashboard/unfulfilled-doors";
-import WaterAvailability from "@/components/features/dashboard/water-availability";
-import WaterCondition from "@/components/features/dashboard/water-condition";
-import WeatherForecast from "@/components/features/dashboard/weather-forecast";
 import HeaderDashboard from "@/components/header-dashboard";
 import SidebarLayout from "@/components/sidebar-layout";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import DashboardIcon from "/src/assets/dashboard.svg";
+import { Card, CardTitle, P, H2, H3, CodeBox } from "@ory/themes"
+import { DocsButton, MarginCard, LogoutLink } from "@/ory"
+import { useState,useEffect } from "react";
+
+import ory from '@/ory/sdk'
+import { AxiosError } from "axios"
 
 export const Route = createFileRoute("/")({
   beforeLoad: async ({ context, location }) => {
@@ -32,6 +24,42 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [session, setSession] = useState<string>(
+    "No valid Ory Session was found.\nPlease sign in to receive one.",
+  )
+  const [hasSession, setHasSession] = useState<boolean>(false)
+  const onLogout = LogoutLink()
+  const navigate = useNavigate()
+  
+  useEffect(() => {
+    ory
+      .toSession(undefined, { withCredentials: true })
+      .then(({ data }) => {
+        setSession(JSON.stringify(data, null, 2))
+        setHasSession(true)
+      })
+      .catch((err: AxiosError) => {
+        console.error("Session Error:", err)
+        switch (err.response?.status) {
+          case 403:
+          // This is a legacy error code thrown. See code 422 for
+          // more details.
+          case 422:
+            // This status code is returned when we are trying to
+            // validate a session which has not yet completed
+            // its second factor
+            return navigate({ to: "/login", search: { aal: "aal2" } })
+          case 401:
+            // do nothing, the user is not logged in
+            return
+        }
+
+        // Something else happened!
+        return Promise.reject(err)
+      })
+  }, [])
+
+
   return (
     <SidebarLayout>
       <HeaderDashboard
@@ -39,56 +67,120 @@ function Index() {
         title1="Dashboard"
         title2="Dashboard"
       />
-
-      <div className="mt-6 space-y-7">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
-          {/* Perangkat */}
-          <Device />
-
-          {/* Internet Speed */}
-          <InternetSpeed />
-        </div>
-
-        {/* Perkiraan Cuaca */}
-        <WeatherForecast />
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-7">
-          {/* SijagaCai */}
-          <Sijagacai />
-          {/* Monitoring System Alert */}
-          <MonitoringSysten />
-          {/* Drone */}
-          <AutonomousDrone />
-        </div>
-
-        {/* Status */}
-        <Status />
-
-        <div className="bg-white rounded-xl">
-          {/* Ringkasan */}
-          <Summary />
-
-          {/* Kondisi Pemenuhan Air Irigasi */}
-          <WaterCondition />
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 px-6">
-            <TMAChart />
-            <WaterAvailability />
-          </div>
-          <div className="px-6">
-            <div className="h-[1px] w-full bg-[#BACBEC] mt-8" />
-          </div>
-
-          {/* Perkiraan Ketersediaan Air Bendung Manganti */}
-          <EstimatedWaterAvailability />
-
-          {/* Daftar Pintu Yang Tidak Terpenuhi */}
-          <UnFulfilledDoors />
-        </div>
-
-        {/* Monitoring Aktivitas */}
-        <ActivityMonitoring />
+      <>
+      <div className={"container-fluid"}>
+      <div>
+        <title>Ory NextJS Integration Example</title>
+        <meta name="description" content="NextJS + React + Vercel + Ory" />
       </div>
+
+      <MarginCard wide>
+        <CardTitle>Welcome to Ory!</CardTitle>
+        <P>
+          Welcome to the Ory Managed UI. This UI implements a run-of-the-mill
+          user interface for all self-service flows (login, registration,
+          recovery, verification, settings). The purpose of this UI is to help
+          you get started quickly. In the long run, you probably want to
+          implement your own custom user interface.
+        </P>
+        <div className="row">
+          <div className="col-md-4 col-xs-12">
+            <div className="box">
+              <H3>Documentation</H3>
+              <P>
+                Here are some useful documentation pieces that help you get
+                started.
+              </P>
+              <div className="row">
+                <DocsButton
+                  title="Get Started"
+                  href="https://www.ory.sh/docs/get-started"
+                  testid="get-started"
+                />
+                <DocsButton
+                  title="User Flows"
+                  href="https://www.ory.sh/docs/concepts/self-service"
+                  testid="user-flows"
+                />
+                <DocsButton
+                  title="Identities"
+                  href="https://www.ory.sh/docs/concepts/identity"
+                  testid="identities"
+                />
+                <DocsButton
+                  title="Sessions"
+                  href="https://www.ory.sh/docs/concepts/session"
+                  testid="sessions"
+                />
+                <DocsButton
+                  title="Bring Your Own UI"
+                  href="https://www.ory.sh/docs/guides/bring-your-user-interface"
+                  testid="customize-ui"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col-md-8 col-xs-12">
+            <div className="box">
+              <H3>Session Information</H3>
+              <P>
+                Below you will find the decoded Ory Session if you are logged
+                in.
+              </P>
+              <CodeBox data-testid="session-content" code={session} />
+            </div>
+          </div>
+        </div>
+      </MarginCard>
+
+      <Card wide>
+        <H2>Other User Interface Screens</H2>
+        <div className={"row"}>
+          <DocsButton
+            unresponsive
+            testid="login"
+            href="/login"
+            disabled={hasSession}
+            title={"Login"}
+          />
+          <DocsButton
+            unresponsive
+            testid="sign-up"
+            href="/registration"
+            disabled={hasSession}
+            title={"Sign Up"}
+          />
+          <DocsButton
+            unresponsive
+            testid="recover-account"
+            href="/recovery"
+            disabled={hasSession}
+            title="Recover Account"
+          />
+          <DocsButton
+            unresponsive
+            testid="verify-account"
+            href="/verification"
+            title="Verify Account"
+          />
+          <DocsButton
+            unresponsive
+            testid="account-settings"
+            href="/settings"
+            disabled={!hasSession}
+            title={"Account Settings"}
+          />
+          <DocsButton
+            unresponsive
+            testid="logout"
+            onClick={onLogout}
+            disabled={!hasSession}
+            title={"Logout"}
+          />
+        </div>
+      </Card>
+    </div>
+      </>
     </SidebarLayout>
   );
 }
