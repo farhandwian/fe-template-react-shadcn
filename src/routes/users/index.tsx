@@ -3,7 +3,7 @@ import HeaderDashboard from "@/components/header-dashboard";
 import SidebarLayout from "@/components/sidebar-layout";
 import UserDetailsDialog from "@/components/user-details-dialog";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-// import UserIcon from "/src/assets/user-white-28.svg";
+import UserIcon from "/src/assets/user-white-28.svg";
 
 export const Route = createFileRoute("/users/")({
   beforeLoad: async ({ context, location }) => {
@@ -45,7 +45,7 @@ function User() {
         <div className="text-xl font-semibold">Daftar Pengguna</div>
 
         <div className="mt-7">
-          <UserDataTable />
+          {/* <UserDataTable /> */}
         </div>
 
         {detailUserId && <UserDetailsDialog userId={detailUserId} />}
