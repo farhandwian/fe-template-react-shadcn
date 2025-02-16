@@ -17,17 +17,6 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/login")({
-  validateSearch: z.object({
-    redirect: z.string().optional().catch(""),
-  }),
-  beforeLoad: async ({ context, search }) => {
-    if (context.auth.auth) {
-      throw redirect({
-        to: search.redirect || "/",
-      });
-    }
-  },
-
   component: () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showOTPDialog, setShowOTPDialog] = useState(false);
