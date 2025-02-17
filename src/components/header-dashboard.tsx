@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Notifications from "./notifications";
+// import Notifications from "./notifications";
 import UserMenu from "./user-menu";
 import { Menu } from "lucide-react";
 import { NavLink } from "react-router-dom";
@@ -293,7 +293,7 @@ const HeaderDashboard: React.FC<HeaderDashboardProps> = ({
 
       {/* Desktop View */}
       <div className="hidden md:flex gap-7 items-center">
-        <Notifications />
+        {/* <Notifications /> */}
         <div className="w-[2px] h-6 bg-[#BACBEC]" />
         <UserMenu />
       </div>
@@ -313,7 +313,7 @@ const HeaderDashboard: React.FC<HeaderDashboardProps> = ({
       {isMenuOpen && (
         <div className="fixed inset-0 bg-white z-50 flex flex-col p-6">
           <div className="mb-6 flex justify-between">
-            <Notifications />
+            {/* <Notifications /> */}
             <div className="flex">
               <UserMenu />
               <button

@@ -1,5 +1,6 @@
 import "./index.css";
-
+import "./styles/globals.css";
+import "@ory/themes/css";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
@@ -10,6 +11,11 @@ import { routeTree } from "./routeTree.gen";
 import { Toaster } from "./components/ui/toaster";
 import { Toaster as SonnerToaster } from "./components/ui/sonner";
 import MessageEvent from "./components/message-event";
+import { theme, globalStyles, ThemeProps } from "@ory/themes";
+import { ThemeProvider } from "styled-components";
+import { createGlobalStyle } from "styled-components";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createRouter({
   routeTree,
@@ -31,6 +37,10 @@ export function InnerApp() {
   return <RouterProvider router={router} context={{ auth }} />;
 }
 
+const GlobalStyle = createGlobalStyle((props: ThemeProps) =>
+  globalStyles(props)
+);
+
 function App() {
   const sseUrl = import.meta.env.VITE_SSE_URL;
   return (
@@ -47,6 +57,7 @@ function App() {
           />
         </MessageEvent>
       </AuthProvider>
+      <ToastContainer />
     </QueryProvider>
   );
 }
@@ -56,7 +67,10 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <App />
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <App />
+      </ThemeProvider>
     </StrictMode>
   );
 }

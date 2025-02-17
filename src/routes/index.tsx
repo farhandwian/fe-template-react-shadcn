@@ -10,20 +10,21 @@ import ory from '@/ory/sdk'
 import { AxiosError } from "axios"
 
 export const Route = createFileRoute("/")({
-  beforeLoad: async ({ context, location }) => {
-    if (!context.auth.auth) {
-      throw redirect({
-        to: "/welcome",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-  },
+  // beforeLoad: async ({ context, location }) => {
+  //   if (!context.auth.auth) {
+  //     throw redirect({
+  //       to: "/welcome",
+  //       search: {
+  //         redirect: location.href,
+  //       },
+  //     });
+  //   }
+  // },
   component: Index,
 });
 
 function Index() {
+  console.log("index")
   const [session, setSession] = useState<string>(
     "No valid Ory Session was found.\nPlease sign in to receive one.",
   )
@@ -146,7 +147,7 @@ function Index() {
           <DocsButton
             unresponsive
             testid="sign-up"
-            href="/registration"
+            href="/register"
             disabled={hasSession}
             title={"Sign Up"}
           />

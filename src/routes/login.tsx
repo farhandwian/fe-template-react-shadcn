@@ -1,192 +1,174 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { useState } from "react";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import OTPFormDialog from "@/components/otp-form-dialog";
-import { useMutation } from "@tanstack/react-query";
-import InformationDialog from "@/components/information-dialog";
-import LoginCover from "/src/assets/cover-login.svg";
-import Logo from "/src/assets/logo-pupr.svg";
-import { LoginRequestSchema } from "@/lib/schema";
-import { AuthService } from "@/services/auth";
-import { AuroraBackground } from "@/components/ui/aurora-background";
-import { motion } from "framer-motion";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { LoginFlow, UpdateLoginFlowBody } from "@ory/client";
+import { ActionCard, CenterLink, Flow, MarginCard, LogoutLink } from "@/ory";
+import { CardTitle } from "@ory/themes";
+
+import ory from "@/ory/sdk";
+// import { handleFlowError } from '@/ory/errors'
+import { AxiosError } from "axios";
+import { Link } from "react-router-dom";
 
 export const Route = createFileRoute("/login")({
-  component: () => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showOTPDialog, setShowOTPDialog] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [infoDialogOpen, setInfoDialogOpen] = useState(false);
-    const [message, setMessage] = useState("");
-
-    const form = useForm<z.infer<typeof LoginRequestSchema>>({
-      resolver: zodResolver(LoginRequestSchema),
-      defaultValues: {
-        email: "",
-        password: "",
-      },
-    });
-
-    const mutation = useMutation({
-      mutationFn: (values: z.infer<typeof LoginRequestSchema>) =>
-        AuthService.login(values),
-      onSuccess: (data) => {
-        if (data.status === "success") {
-          setEmail(form.getValues("email"));
-          setPassword(form.getValues("password"));
-          toast.success("Login successfully, requesting OTP...");
-          form.reset();
-
-          setShowOTPDialog(true);
-        }
-      },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onError: (error: any) => {
-        setInfoDialogOpen(true);
-        const ErrorMessage = error?.response?.data?.error;
-        setMessage(ErrorMessage || "Something went wrong");
-      },
-    });
-
-    const submitHandler = (values: z.infer<typeof LoginRequestSchema>) => {
-      mutation.mutate(values);
-    };
-
-    return (
-
-      <div className="bg-primary-brand-600 h-screen">
-        <AuroraBackground>
-          <motion.div
-            initial={{ opacity: 0.0, y: 40 }}
-            whileInView={{ opacity: 0.8, y: 0 }}
-            transition={{
-              delay: 0.3,
-              duration: 0.8,
-              ease: "easeInOut",
-            }}
-            className="relative flex flex-col gap-4 items-center justify-center px-4"
-          >
-            <div className="flex h-full items-center justify-center lg:items-stretch lg:justify-normal">
-              <img
-                src={LoginCover}
-                alt="Login"
-                className="hidden lg:block object-cover w-full rounded-tl-3xl rounded-bl-3xl"
-              />
-
-              <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white rounded-3xl lg:rounded-tl-none lg:rounded-bl-none lg:rounded-tr-3xl lg:rounded-br-3xl">
-                <div className="w-full max-w-md">
-                  <div className="my-3 space-y-2 flex flex-col items-center justify-center lg:hidden">
-                    <img src={Logo} alt="Logo" className="mb-2" />
-                    <div className="text-start space-y-2">
-                      <h1 className="text-3xl font-bold text-primary-brand-600">
-                        Command Center BBWS Citanduy
-                      </h1>
-                      <h3 className="text-md text-[#757575]">
-                        Direktorat Jenderal Sumber Daya Air
-                      </h3>
-                    </div>
-                  </div>
-                  <h2 className="text-3xl font-bold mb-2">Masuk</h2>
-                  <p className="text-[#757575] mb-8">
-                    Silakan masukkan email dan kata sandi
-                  </p>
-
-                  <form
-                    onSubmit={form.handleSubmit(submitHandler)}
-                    className="space-y-6"
-                  >
-                    <div className="mb-6">
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-black mb-2"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        className="w-full px-4 py-4 h-12 border border-[#9E9E9E] rounded-2xl bg-[#F8F9FF] focus:outline-none focus:ring-2 focus:ring-primary"
-                        placeholder="email@email.com"
-                        {...form.register("email")}
-                      />
-                      {form.formState.errors.email && (
-                        <span className="text-red-500 text-sm mt-1">
-                          {form.formState.errors.email.message}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="mb-10">
-                      <label
-                        htmlFor="password"
-                        className="block text-sm font-medium text-black mb-2"
-                      >
-                        Kata Sandi
-                      </label>
-                      <div className="relative flex items-center">
-                        <input
-                          type={showPassword ? "text" : "password"}
-                          id="password"
-                          className="w-full px-4 py-4 h-12 border border-[#9E9E9E] rounded-2xl bg-[#F8F9FF] focus:outline-none focus:ring-2 focus:ring-primary"
-                          placeholder="Masukkan Kata Sandi"
-                          {...form.register("password")}
-                        />
-                        <button
-                          type="button"
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? (
-                            <EyeOffIcon className="h-5 w-5 text-primary" />
-                          ) : (
-                            <EyeIcon className="h-5 w-5 text-primary" />
-                          )}
-                        </button>
-                      </div>
-                      {form.formState.errors.password && (
-                        <span className="text-red-500 text-sm mt-1">
-                          {form.formState.errors.password.message}
-                        </span>
-                      )}
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-[149px] bg-primary text-white py-4 px-4 h-12 text-sm rounded-2xl hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                    >
-                      Masuk
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-          </motion.div>
-        </AuroraBackground>
-        {showOTPDialog && (
-          <OTPFormDialog
-            open={showOTPDialog}
-            setOpen={setShowOTPDialog}
-            email={email}
-            password={password}
-          />
-        )}
-
-        <InformationDialog
-          illustrationType="failed"
-          buttonText="Coba Lagi"
-          title="Gagal Masuk"
-          description={message}
-          isOpen={infoDialogOpen}
-          onClose={() => setInfoDialogOpen(false)}
-        />
-      </div>
-    );
-  },
+  component: LoginPage,
 });
+
+function LoginPage() {
+  // The "flow" represents a registration process and contains
+  // information about the form we need to render (e.g. username + password)
+  const [flow, setFlow] = useState<LoginFlow>();
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  const navigate = useNavigate();
+
+  // Get ?flow=... from the URL
+  // const { flow: flowId, return_to: returnTo } = router.query;
+  const searchParams = Route.useSearch() as {
+    flow?: string;
+    return_to?: string;
+    refresh?: string;
+    aal?: string;
+  };
+  const flowId = searchParams?.flow;
+  const returnTo = searchParams?.return_to;
+  const refresh = searchParams?.refresh;
+  const aal = searchParams?.aal;
+
+  console.log("flowId", flowId);
+  console.log("returnTo", returnTo);
+
+  // This might be confusing, but we want to show the user an option
+  // to sign out if they are performing two-factor authentication!
+  const onLogout = LogoutLink([aal, refresh]);
+
+  // In this effect we either initiate a new registration flow, or we fetch an existing registration flow.
+  useEffect(() => {
+    if (!isInitialized) {
+      setIsInitialized(true);
+      return;
+    }
+    // If the router is not ready yet, or we already have a flow, do nothing.
+    if (flow) {
+      return;
+    }
+
+    // If ?flow=.. was in the URL, we fetch it
+    if (flowId) {
+      ory
+        .getLoginFlow({ id: String(flowId) })
+        .then(({ data }) => {
+          // We received the flow - let's use its data and render the form!
+          setFlow(data);
+        })
+        // .catch(handleFlowError(router, "registration", setFlow));
+        .catch((err) => {
+          console.log("error", err);
+          return Promise.reject(err);
+        });
+      return;
+    }
+
+    // Otherwise we initialize it
+    ory
+      .createBrowserLoginFlow({
+        refresh: Boolean(refresh),
+        aal: aal ? String(aal) : undefined,
+        returnTo: returnTo ? String(returnTo) : undefined,
+      })
+      .then(({ data }) => {
+        setFlow(data);
+      })
+      // .catch(handleFlowError(router, "registration", setFlow));
+      .catch((err) => {
+        console.log("error", err);
+        return Promise.reject(err);
+      });
+  }, [flowId, returnTo, refresh, aal, flow, isInitialized]);
+
+  const onSubmit = async (values: UpdateLoginFlowBody) => {
+    // await router
+    //   // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+    //   // his data when she/he reloads the page.
+    //   .push(`/registration?flow=${flow?.id}`, undefined, { shallow: true });
+
+    navigate({
+      to: "/login",
+      search: { flow: flow?.id },
+      replace: true, // Prevents adding a new history entry
+    });
+
+    ory
+      .updateLoginFlow({
+        flow: String(flow?.id),
+        updateLoginFlowBody: values,
+      })
+      .then(async () => {
+        if (flow?.return_to) {
+          window.location.href = flow?.return_to;
+          return;
+        }
+        navigate({
+          to: "/",
+        });
+      })
+      .then(() => {})
+      // .catch(handleFlowError(router, 'registration', setFlow))
+      .catch((err) => {
+        console.log("error", err);
+        return Promise.reject(err);
+      })
+      .catch((err: AxiosError) => {
+        // If the previous handler did not catch the error it's most likely a form validation error
+        if (err.response?.status === 400) {
+          // Yup, it is!
+          setFlow(err.response?.data as LoginFlow);
+          return;
+        }
+
+        return Promise.reject(err);
+      });
+  };
+
+  return (
+    <>
+      <div>
+        <title>Sign in - Ory NextJS Integration Example</title>
+        <meta name="description" content="NextJS + React + Vercel + Ory" />
+      </div>
+      <MarginCard>
+        <CardTitle>
+          {(() => {
+            if (flow?.refresh) {
+              return "Confirm Action";
+            } else if (flow?.requested_aal === "aal2") {
+              return "Two-Factor Authentication";
+            }
+            return "Sign In";
+          })()}
+        </CardTitle>
+        <Flow onSubmit={onSubmit} flow={flow} />
+      </MarginCard>
+      {aal || refresh ? (
+        <ActionCard>
+          <CenterLink data-testid="logout-link" onClick={onLogout}>
+            Log out
+          </CenterLink>
+        </ActionCard>
+      ) : (
+        <>
+          <ActionCard>
+            <Link to="/register">
+              <CenterLink>Create account</CenterLink>
+            </Link>
+          </ActionCard>
+          <ActionCard>
+            <Link to="/recovery">
+              <CenterLink>Recover your account</CenterLink>
+            </Link>
+          </ActionCard>
+        </>
+      )}
+    </>
+  );
+}

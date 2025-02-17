@@ -1,42 +1,46 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
-import { RegistrationFlow, UpdateRegistrationFlowBody } from '@ory/client'
-import { ActionCard, CenterLink, Flow, MarginCard } from '@/ory'
-import { CardTitle } from "@ory/themes"
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { RegistrationFlow, UpdateRegistrationFlowBody } from "@ory/client";
+import { ActionCard, CenterLink, Flow, MarginCard } from "@/ory";
+import { CardTitle } from "@ory/themes";
 
-import ory from '@/ory/sdk'
+import ory from "@/ory/sdk";
 // import { handleFlowError } from '@/ory/errors'
-import { AxiosError } from "axios"
+import { AxiosError } from "axios";
 
-export const Route = createFileRoute('/register')({
-  // beforeLoad: async ({ context, location }) => {
-  //   if (context.auth.auth) {
-  //     throw redirect({
-  //       to: "/dashboard",
-  //     });
-  //   }
-  // },
+export const Route = createFileRoute("/register")({
   component: RegistrationPage,
-})
+});
 
 function RegistrationPage() {
   // The "flow" represents a registration process and contains
   // information about the form we need to render (e.g. username + password)
-  const [flow, setFlow] = useState<RegistrationFlow>()
-  const navigate = useNavigate()
+  const [flow, setFlow] = useState<RegistrationFlow>();
+  const [isInitialized, setIsInitialized] = useState(false);
+  const navigate = useNavigate();
 
   // Get ?flow=... from the URL
   // const { flow: flowId, return_to: returnTo } = router.query;
-  const searchParams = Route.useSearch() as { flow?: string; return_to?: string }
-  const flowId = searchParams?.flow
-  const returnTo = searchParams?.return_to
+  const searchParams = Route.useSearch() as {
+    flow?: string;
+    return_to?: string;
+  };
+  const flowId = searchParams?.flow;
+  const returnTo = searchParams?.return_to;
+
+  console.log("flowId", flowId);
+  console.log("returnTo", returnTo);
 
   // In this effect we either initiate a new registration flow, or we fetch an existing registration flow.
   useEffect(() => {
+    if (!isInitialized) {
+      setIsInitialized(true);
+      return;
+    }
     // If the router is not ready yet, or we already have a flow, do nothing.
     if (flow) {
-      return
+      return;
     }
 
     // If ?flow=.. was in the URL, we fetch it
@@ -45,14 +49,14 @@ function RegistrationPage() {
         .getRegistrationFlow({ id: String(flowId) })
         .then(({ data }) => {
           // We received the flow - let's use its data and render the form!
-          setFlow(data)
+          setFlow(data);
         })
         // .catch(handleFlowError(router, "registration", setFlow));
         .catch((err) => {
-          console.log('error', err)
-          return Promise.reject(err)
-        })
-      return
+          console.log("error", err);
+          return Promise.reject(err);
+        });
+      return;
     }
 
     // Otherwise we initialize it
@@ -61,14 +65,14 @@ function RegistrationPage() {
         returnTo: returnTo ? String(returnTo) : undefined,
       })
       .then(({ data }) => {
-        setFlow(data)
+        setFlow(data);
       })
       // .catch(handleFlowError(router, "registration", setFlow));
       .catch((err) => {
-        console.log('error', err)
-        return Promise.reject(err)
-      })
-  }, [flowId, returnTo, flow])
+        console.log("error", err);
+        return Promise.reject(err);
+      });
+  }, [flowId, returnTo, flow, isInitialized]);
 
   const onSubmit = async (values: UpdateRegistrationFlowBody) => {
     // await router
@@ -77,10 +81,10 @@ function RegistrationPage() {
     //   .push(`/registration?flow=${flow?.id}`, undefined, { shallow: true });
 
     navigate({
-      to: '/register',
+      to: "/register",
       search: { flow: flow?.id },
       replace: true, // Prevents adding a new history entry
-    })
+    });
 
     ory
       .updateRegistrationFlow({
@@ -91,19 +95,19 @@ function RegistrationPage() {
         // If we ended up here, it means we are successfully signed up!
         //
         // You can do cool stuff here, like having access to the identity which just signed up:
-        console.log('This is the user session: ', data, data.identity)
+        console.log("This is the user session: ", data, data.identity);
 
         // continue_with is a list of actions that the user might need to take before the registration is complete.
         // It could, for example, contain a link to the verification form.
         if (data.continue_with) {
           for (const item of data.continue_with) {
             switch (item.action) {
-              case 'show_verification_ui':
+              case "show_verification_ui":
                 navigate({
-                  to: '/verification',
+                  to: "/verification",
                   search: { flow: item.flow.id },
-                })
-                return
+                });
+                return;
             }
           }
         }
@@ -111,25 +115,25 @@ function RegistrationPage() {
         // If continue_with did not contain anything, we can just return to the home page.
         //  await router.push(flow?.return_to || '/')
         navigate({
-          to: flow?.return_to || '/',
-        })
+          to: flow?.return_to || "/",
+        });
       })
       // .catch(handleFlowError(router, 'registration', setFlow))
       .catch((err) => {
-        console.log('error', err)
-        return Promise.reject(err)
+        console.log("error", err);
+        return Promise.reject(err);
       })
       .catch((err: AxiosError) => {
         // If the previous handler did not catch the error it's most likely a form validation error
         if (err.response?.status === 400) {
           // Yup, it is!
-          setFlow(err.response?.data as RegistrationFlow)
-          return
+          setFlow(err.response?.data as RegistrationFlow);
+          return;
         }
 
-        return Promise.reject(err)
-      })
-  }
+        return Promise.reject(err);
+      });
+  };
 
   return (
     <>
@@ -147,5 +151,7 @@ function RegistrationPage() {
         </CenterLink>
       </ActionCard>
     </>
-  )
+  );
 }
+
+
