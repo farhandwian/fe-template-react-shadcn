@@ -1,0 +1,153 @@
+{
+    "$id": "https://schemas.ory.sh/presets/kratos/identity.email.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Person",
+    "type": "object",
+    "properties": {
+      "traits": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "E-Mail",
+            "ory.sh/kratos": {
+              "credentials": {
+                "password": {
+                  "identifier": true
+                }
+              },
+              "recovery": {
+                "via": "email"
+              },
+              "verification": {
+                "via": "email"
+              }
+            },
+            "maxLength": 320
+          },
+          "phone": {
+            "type": "string",
+            "format": "tel",
+            "title": "Phone Number",
+            "ory.sh/kratos": {
+              "credentials": {
+                "code": {
+                  "identifier": true,
+                  "via": "sms"
+                }
+              },
+              "verification": {
+                "via": "sms"
+              }
+            },
+            "maxLength": 15
+          }
+        },
+        "required": [
+          "email",
+          "phone"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+
+
+
+  {
+    id: '81028e3f-3344-4f17-99bd-72aa475ffbb3',
+    type: 'browser',
+    expires_at: '2025-02-21T06:33:12.700229Z',
+    issued_at: '2025-02-21T05:33:12.700229Z',
+    request_url: 'http://localhost:5000/self-service/recovery/browser',
+    active: 'code',
+    ui: {
+      action: 
+        'http://localhost:5000/self-service/recovery?flow=81028e3f-3344-4f17-99bd-72aa475ffbb3',
+      method: 'POST',
+      nodes: [
+        {
+          type: 'input',
+          group: 'default',
+          attributes: {
+            name: 'csrf_token',
+            type: 'hidden',
+            value: 
+              'lrSeX373wtDheIuLS98U1ZIEo4BUdyqcq3+N3L8kHGlWNoQ5cmgthFTCYbLgWC1JlKLPVM3VpfqhbQvrrns/iA==',
+            required: true,
+            disabled: false,
+            node_type: 'input'
+          },
+          messages: [],
+          meta: {}
+        },
+        {
+          type: 'input',
+          group: 'code',
+          attributes: {
+            name: 'code',
+            type: 'text',
+            required: true,
+            pattern: '[0-9]+',
+            disabled: false,
+            maxlength: 6,
+            node_type: 'input'
+          },
+          messages: [],
+          meta: { label: { id: 1070010, text: 'Recovery code', type: 'info' } }
+        },
+        {
+          type: 'input',
+          group: 'code',
+          attributes: {
+            name: 'method',
+            type: 'hidden',
+            value: 'code',
+            disabled: false,
+            node_type: 'input'
+          },
+          messages: [],
+          meta: {}
+        },
+        {
+          type: 'input',
+          group: 'code',
+          attributes: {
+            name: 'method',
+            type: 'submit',
+            value: 'code',
+            disabled: false,
+            node_type: 'input'
+          },
+          messages: [],
+          meta: { label: { id: 1070009, text: 'Continue', type: 'info' } }
+        },
+        {
+          type: 'input',
+          group: 'code',
+          attributes: {
+            name: 'email',
+            type: 'submit',
+            value: 'dwyanfarhan123@gmail.com',
+            disabled: false,
+            node_type: 'input'
+          },
+          messages: [],
+          meta: { label: { id: 1070008, text: 'Resend code', type: 'info' } }
+        }
+      ]
+    },
+    state: 'passed_challenge',
+    continue_with: [
+      {
+        action: 'show_settings_ui',
+        flow: {
+          id: 'bbc8fab1-d950-4948-ba65-f6fdd0b1adcf',
+          url: 
+            'http://localhost:5173/settings?flow=bbc8fab1-d950-4948-ba65-f6fdd0b1adcf'
+        }
+      }
+    ],
+    transient_payload: {}
+  }

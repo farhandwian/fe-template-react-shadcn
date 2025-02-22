@@ -44,7 +44,7 @@ const getUser = api<
   z.infer<typeof GetUserResponseSchema>
 >({
   method: "GET",
-  path: "/users/:id",
+  path: "/api/users/:id",
   requestSchema: GetUserRequestSchema,
   responseSchema: GetUserResponseSchema,
 });

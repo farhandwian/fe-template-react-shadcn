@@ -13,8 +13,10 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as WelcomeImport } from './routes/welcome'
 import { Route as VerificationImport } from './routes/verification'
+import { Route as SettingImport } from './routes/setting'
 import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as RegisterImport } from './routes/register'
+import { Route as RecoveryImport } from './routes/recovery'
 import { Route as LoginImport } from './routes/login'
 import { Route as ChangePasswordImport } from './routes/change-password'
 import { Route as IndexImport } from './routes/index'
@@ -32,6 +34,11 @@ const VerificationRoute = VerificationImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SettingRoute = SettingImport.update({
+  path: '/setting',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ResetPasswordRoute = ResetPasswordImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRoute,
@@ -39,6 +46,11 @@ const ResetPasswordRoute = ResetPasswordImport.update({
 
 const RegisterRoute = RegisterImport.update({
   path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RecoveryRoute = RecoveryImport.update({
+  path: '/recovery',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -87,6 +99,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/recovery': {
+      id: '/recovery'
+      path: '/recovery'
+      fullPath: '/recovery'
+      preLoaderRoute: typeof RecoveryImport
+      parentRoute: typeof rootRoute
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -99,6 +118,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordImport
+      parentRoute: typeof rootRoute
+    }
+    '/setting': {
+      id: '/setting'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof SettingImport
       parentRoute: typeof rootRoute
     }
     '/verification': {
@@ -131,8 +157,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/change-password': typeof ChangePasswordRoute
   '/login': typeof LoginRoute
+  '/recovery': typeof RecoveryRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/setting': typeof SettingRoute
   '/verification': typeof VerificationRoute
   '/welcome': typeof WelcomeRoute
   '/users': typeof UsersIndexRoute
@@ -142,8 +170,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/change-password': typeof ChangePasswordRoute
   '/login': typeof LoginRoute
+  '/recovery': typeof RecoveryRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/setting': typeof SettingRoute
   '/verification': typeof VerificationRoute
   '/welcome': typeof WelcomeRoute
   '/users': typeof UsersIndexRoute
@@ -154,8 +184,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/change-password': typeof ChangePasswordRoute
   '/login': typeof LoginRoute
+  '/recovery': typeof RecoveryRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/setting': typeof SettingRoute
   '/verification': typeof VerificationRoute
   '/welcome': typeof WelcomeRoute
   '/users/': typeof UsersIndexRoute
@@ -167,8 +199,10 @@ export interface FileRouteTypes {
     | '/'
     | '/change-password'
     | '/login'
+    | '/recovery'
     | '/register'
     | '/reset-password'
+    | '/setting'
     | '/verification'
     | '/welcome'
     | '/users'
@@ -177,8 +211,10 @@ export interface FileRouteTypes {
     | '/'
     | '/change-password'
     | '/login'
+    | '/recovery'
     | '/register'
     | '/reset-password'
+    | '/setting'
     | '/verification'
     | '/welcome'
     | '/users'
@@ -187,8 +223,10 @@ export interface FileRouteTypes {
     | '/'
     | '/change-password'
     | '/login'
+    | '/recovery'
     | '/register'
     | '/reset-password'
+    | '/setting'
     | '/verification'
     | '/welcome'
     | '/users/'
@@ -199,8 +237,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChangePasswordRoute: typeof ChangePasswordRoute
   LoginRoute: typeof LoginRoute
+  RecoveryRoute: typeof RecoveryRoute
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SettingRoute: typeof SettingRoute
   VerificationRoute: typeof VerificationRoute
   WelcomeRoute: typeof WelcomeRoute
   UsersIndexRoute: typeof UsersIndexRoute
@@ -210,8 +250,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChangePasswordRoute: ChangePasswordRoute,
   LoginRoute: LoginRoute,
+  RecoveryRoute: RecoveryRoute,
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SettingRoute: SettingRoute,
   VerificationRoute: VerificationRoute,
   WelcomeRoute: WelcomeRoute,
   UsersIndexRoute: UsersIndexRoute,
@@ -232,8 +274,10 @@ export const routeTree = rootRoute
         "/",
         "/change-password",
         "/login",
+        "/recovery",
         "/register",
         "/reset-password",
+        "/setting",
         "/verification",
         "/welcome",
         "/users/"
@@ -248,11 +292,17 @@ export const routeTree = rootRoute
     "/login": {
       "filePath": "login.tsx"
     },
+    "/recovery": {
+      "filePath": "recovery.tsx"
+    },
     "/register": {
       "filePath": "register.tsx"
     },
     "/reset-password": {
       "filePath": "reset-password.tsx"
+    },
+    "/setting": {
+      "filePath": "setting.tsx"
     },
     "/verification": {
       "filePath": "verification.tsx"

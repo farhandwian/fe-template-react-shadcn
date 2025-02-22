@@ -14,6 +14,8 @@ import MonitoringPeringatanIcon from "/src/assets/ic-monitoring.svg";
 import KnowledgeCenterIcon from "/src/assets/ic-knowledge.svg";
 import DroneIcon from "/src/assets/ic-drone.svg";
 import DataWarehouseIcon from "/src/assets/ic-data-warehouse.svg";
+import { UserService } from "@/services/user";
+import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/welcome")({
   validateSearch: z.object({
@@ -21,6 +23,16 @@ export const Route = createFileRoute("/welcome")({
   }),
 
   component: () => {
+    // const { data: user, isLoading } = useQuery({
+    //   queryKey: ["user", "2"],
+    //   queryFn: () =>
+    //     UserService.getUser({
+    //       id: "2",
+    //     }),
+    //   // enabled: !!2,
+    // });
+
+    // console.log("user:", user, isLoading);
     const navigate = useNavigate()
     return (
       <>

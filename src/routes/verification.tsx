@@ -1,142 +1,114 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
 import { VerificationFlow, UpdateVerificationFlowBody } from "@ory/client";
-import { ActionCard, CenterLink, Flow, MarginCard } from "@/ory";
-import { CardTitle } from "@ory/themes";
-
-import ory from "@/ory/sdk";
-// import { handleFlowError } from '@/ory/errors'
-import { AxiosError } from "axios";
-import { Link } from "react-router-dom";
+import { UserAuthCard } from "@ory/elements";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { sdk, sdkError } from "@/ory/sdk";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/verification")({
-  // beforeLoad: async ({ context, location }) => {
-  //   if (context.auth.auth) {
-  //     throw redirect({
-  //       to: "/dashboard",
-  //     });
-  //   }
-  // },
-  component: VerificationPage,
+  component: Verification,
 });
 
-function VerificationPage() {
-  // The "flow" represents a registration process and contains
-  // information about the form we need to render (e.g. username + password)
-  const [flow, setFlow] = useState<VerificationFlow>();
+function Verification() {
+  const [flow, setFlow] = useState<VerificationFlow | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // The return_to is a query parameter is set by you when you would like to redirect
+  // the user back to a specific URL after registration is successful
+  // In most cases it is not necessary to set a return_to if the UI business logic is
+  // handled by the SPA.
+  // In OAuth flows this value might be ignored in favor of keeping the OAuth flow
+  // intact between multiple flows (e.g. Login -> Recovery -> Settings -> OAuth2 Consent)
+  // https://www.ory.sh/docs/oauth2-oidc/identity-provider-integration-settings
+  const returnTo = searchParams.get("return_to");
+
+  const flowId = searchParams.get("flow");
+
+  const type = searchParams.get("type");
+  console.log("type verification page", type);
+  console.log("flowId verification page", flowId);
+
   const navigate = useNavigate();
 
-  // Get ?flow=... from the URL
-  // const { flow: flowId, return_to: returnTo } = router.query;
-  const searchParams = Route.useSearch() as { flow?: string; return_to?: string }
-  const flowId = searchParams?.flow;
-  const returnTo = searchParams?.return_to;
+  // Get the flow based on the flowId in the URL (.e.g redirect to this page after flow initialized)
+  //   // Fetch an existing verification flow
+  const getFlow = useCallback((flowId: string) => {
+    console.log("Fetching verification flow with ID:", flowId);
+    return sdk
+      .getVerificationFlow({ id: flowId })
+      .then(({ data: flow }) => {
+        console.log("Fetched Verification Flow:", flow);
+        setFlow(flow);
+      })
+      .catch(sdkErrorHandler);
+  }, []);
+  // initialize the sdkError for generic handling of errors
+  const sdkErrorHandler = sdkError(getFlow, setFlow, "/verification", true);
 
-  // In this effect we either initiate a new registration flow, or we fetch an existing registration flow.
-  useEffect(() => {
-    // If the router is not ready yet, or we already have a flow, do nothing.
-    if (flow) {
-      return;
-    }
-
-    // If ?flow=.. was in the URL, we fetch it
-    if (flowId) {
-      ory
-        .getVerificationFlow({ id: String(flowId) })
-        .then(({ data }) => {
-          // We received the flow - let's use its data and render the form!
-          setFlow(data);
-        })
-        // .catch(handleFlowError(router, "registration", setFlow));
-        .catch((err) => {
-          console.log("error", err);
-          return Promise.reject(err);
-        });
-      return;
-    }
-
-    // Otherwise we initialize it
-    ory
+  // create a new verification flow
+  const createFlow = () => {
+    sdk
       .createBrowserVerificationFlow({
-        returnTo: returnTo ? String(returnTo) : undefined,
+        ...(returnTo && { returnTo: returnTo }),
       })
-      .then(({ data }) => {
-        setFlow(data);
+      // flow contains the form fields, error messages and csrf token
+      .then(({ data: flow }) => {
+        // Update URI query params to include flow id
+        setSearchParams({ ["flow"]: flow.id });
+        // Set the flow data
+        setFlow(flow);
       })
-      // .catch(handleFlowError(router, "registration", setFlow));
-      .catch((err) => {
-        console.log("error", err);
-        return Promise.reject(err);
-      });
-  }, [flowId, returnTo, flow]);
-
-  const onSubmit = async (values: UpdateVerificationFlowBody) => {
-    // await router
-    //   // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
-    //   // his data when she/he reloads the page.
-    //   .push(`/registration?flow=${flow?.id}`, undefined, { shallow: true });
-
-    navigate({
-      to: "/verification",
-      search: { flow: flow?.id },
-      replace: true, // Prevents adding a new history entry
-    });
-
-    ory
-      .updateVerificationFlow({
-        flow: String(flow?.id),
-        updateVerificationFlowBody: values,
-      })
-      .then(async ({ data }) => {
-        // Form submission was successful, show the message to the user!
-        setFlow(data);
-      })
-      // .catch(handleFlowError(router, 'registration', setFlow))
-      .catch((err) => {
-        console.log("error", err);
-        return Promise.reject(err);
-      })
-      .catch((err: AxiosError) => {
-        switch (err.response?.status) {
-          case 400:
-            // Status code 400 implies the form validation had an error
-            setFlow(err.response?.data as VerificationFlow);
-            return;
-          case 410:
-            const newFlowID = (err.response?.data as { use_flow_id: string })
-              .use_flow_id;
-            navigate({
-              to: "/verification",
-              search: { flow: newFlowID },
-              replace: true, // Prevents adding a new history entry
-            });
-
-            ory
-              .getVerificationFlow({ id: newFlowID })
-              .then(({ data }) => setFlow(data));
-            return;
-        }
-
-        throw err;
-      });
+      .catch(sdkErrorHandler);
   };
 
-  return (
-    <>
-      <div>
-        <title>Verify your account - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
-      </div>
-      <MarginCard>
-        <CardTitle>Verify your account</CardTitle>
-        <Flow onSubmit={onSubmit} flow={flow} />
-      </MarginCard>
-      <ActionCard>
-        <Link to="/">
-          <CenterLink>Go back</CenterLink>
-        </Link>
-      </ActionCard>
-    </>
+  // submit the verification form data to Ory
+  const submitFlow = (body: UpdateVerificationFlowBody) => {
+    // something unexpected went wrong and the flow was not set
+    if (!flow) return navigate("/verification", { replace: true });
+
+    sdk
+      .updateVerificationFlow({
+        flow: flow.id,
+        updateVerificationFlowBody: body,
+      })
+      .then(({ data: flow }) => {
+        setFlow(flow);
+      })
+      .catch(sdkErrorHandler);
+  };
+
+  useEffect(() => {
+    // it could happen that we are redirected here with an existing flow
+    if (flowId && type === "verification") {
+      console.log("masuk sini 1 useeffect jika ada flowid di verfication page dengan flowId", flowId);
+      // if the flow failed to get since it could be expired or invalid, we create a new one
+      getFlow(flowId).catch(createFlow);
+      return;
+    }
+
+    console.log("masuk sini 1 useeffect jika tidak ada flowid di verfication page");
+    // createFlow();
+  }, [flowId, type]);
+
+  // if the flow is not set, we show a loading indicator
+  return flow ? (
+    // create a new verification form with the flow data using Ory Elements
+    <UserAuthCard
+      flowType={"verification"}
+      // we always need to provide the flow data since it contains the form fields, error messages and csrf token
+      flow={flow}
+      // we want users to be able to go back to the login page from the verification page
+      additionalProps={{
+        signupURL: {
+          handler: () => {
+            navigate({ pathname: "/registration" }, { replace: true });
+          },
+        },
+      }}
+      // submit the verification form data to Ory
+      onSubmit={({ body }) => submitFlow(body as UpdateVerificationFlowBody)}
+    />
+  ) : (
+    <div>Loading...</div>
   );
 }
