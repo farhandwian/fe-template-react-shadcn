@@ -33,10 +33,10 @@ export const Route = createFileRoute("/welcome")({
     // });
 
     // console.log("user:", user, isLoading);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     return (
       <>
-        <div className="bg-primary-brand-600">
+       <div className="bg-primary-brand-600">
           <AuroraBackground>
             <div className="h-[80vh] flex items-center justify-center flex-col">
               <div className="mb-4">

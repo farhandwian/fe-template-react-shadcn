@@ -1,5 +1,4 @@
 import { AuthService } from "@/services/auth";
-import { useAuthStore } from "@/store/auth-store-kratos";
 import { QueryClient } from "@tanstack/react-query";
 import axios, {
   AxiosError,
@@ -68,24 +67,24 @@ export const dashboardInstance: AxiosInstance =
 // };
 
 // Request interceptor
-instance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    const userInfo = useAuthStore.getState().userInfo;
-    console.log(
-      "Making request with token:",
-      userInfo ? "present" : "absent"
-    );
+// instance.interceptors.request.use(
+//   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+//     const userInfo = useAuthStore.getState().userInfo;
+//     console.log(
+//       "Making request with token:",
+//       userInfo ? "present" : "absent"
+//     );
 
-    if (userInfo) {
-      config.headers.Authorization = userInfo;
-    }
-    return config;
-  },
-  (error: AxiosError): Promise<never> => {
-    console.log("Request interceptor error:", error);
-    return Promise.reject(error);
-  }
-);
+//     if (userInfo) {
+//       config.headers.Authorization = userInfo;
+//     }
+//     return config;
+//   },
+//   (error: AxiosError): Promise<never> => {
+//     console.log("Request interceptor error:", error);
+//     return Promise.reject(error);
+//   }
+// );
 
 // Response interceptor
 // instance.interceptors.response.use(

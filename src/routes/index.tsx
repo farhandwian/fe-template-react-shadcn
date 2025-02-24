@@ -2,7 +2,6 @@ import { Session } from "@ory/client"
 import { Typography } from "@ory/elements"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import "@/Dashboard.css"
 import { sdk, sdkError } from "@/ory/sdk"
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query"

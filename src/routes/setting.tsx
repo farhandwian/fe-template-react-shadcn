@@ -1,11 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SettingsFlow, UpdateSettingsFlowBody } from "@ory/client";
 import {
-  gridStyle,
-  NodeMessages,
-  UserSettingsCard,
-  UserSettingsFlowType,
+  // gridStyle,
+  // NodeMessages,
+  // UserSettingsCard,
+  // UserSettingsFlowType,
 } from "@ory/elements";
+
+import {
+  gridStyle
+} from "@/ory/src/theme"
+
+import { NodeMessages } from "@/ory/src/react-components/ory/helpers/error-messages";
+import { UserSettingsCard ,UserSettingsFlowType} from "@/ory/src/react-components/ory/user-settings-card";
+
+
+
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { sdk, sdkError } from "@/ory/sdk";
@@ -100,7 +110,6 @@ function Setting() {
   return flow ? (
     <div className={gridStyle({ gap: 16 })}>
       <NodeMessages uiMessages={flow.ui.messages} />
-      tes123change jsx
       {/* <div className="w-96"> */}
 
          {/* here we simply map all of the settings flows we could have. These flows won't render if they aren't enabled inside your Ory Network project */}
@@ -124,7 +133,7 @@ function Setting() {
           includeScripts={true}
           // submit the form data the user provides to Ory
           onSubmit={({ body }) => onSubmit(body as UpdateSettingsFlowBody)}
-          className="bg-red-400"
+          className=""
         />
       ))}
       {/* </div> */}
