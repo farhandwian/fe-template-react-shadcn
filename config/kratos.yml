@@ -1,0 +1,508 @@
+# dsn: sqlite:///var/lib/kratos/kratos.db?_fk=true
+# # log:
+# #   level: info
+# #   format: json
+# log:
+#   level: debug
+#   format: text
+#   leak_sensitive_values: true
+# clients:
+#   web_hook:
+#     header_allowlist:
+#     - Accept
+#     - Accept-Encoding
+#     - Accept-Language
+#     - Content-Length
+#     - Content-Type
+#     - Origin
+#     - Priority
+#     - Referer
+#     - Sec-Ch-Ua
+#     - Sec-Ch-Ua-Mobile
+#     - Sec-Ch-Ua-Platform
+#     - Sec-Fetch-Dest
+#     - Sec-Fetch-Mode
+#     - Sec-Fetch-Site
+#     - Sec-Fetch-User
+#     - True-Client-Ip
+#     - User-Agent
+#     - X-Forwarded-Host
+#     - Ory-Base-Url-Rewrite
+#     - Ory-Base-Url-Rewrite-Token
+#     - X-Ory-Original-Host
+#     - Ory-No-Custom-Domain-Redirect
+# cookies:
+#   domain: nostalgic-carver-mcyw2yijqr.projects.oryapis.com
+#   path: /
+#   same_site: Lax
+# # courier:
+# #   smtp:
+# #     from_name: temp via Ory
+# #   templates:
+# #     login_code:
+# #       valid:
+# #         email:
+# #           body: {}
+# #         sms:
+# #           body: {}
+# #     recovery:
+# #       invalid:
+# #         email:
+# #           body: {}
+# #       valid:
+# #         email:
+# #           body: {}
+# #     recovery_code:
+# #       invalid:
+# #         email:
+# #           body: {}
+# #       valid:
+# #         email:
+# #           body: {}
+# #     registration_code:
+# #       valid:
+# #         email:
+# #           body: {}
+# #         # sms:
+# #         #   body: {}
+# #     verification:
+# #       invalid:
+# #         email:
+# #           body: {}
+# #       valid:
+# #         email:
+# #           body: {}
+# #     verification_code:
+# #       invalid:
+# #         email:
+# #           body: {}
+# #       valid:
+# #         email:
+# #           body:
+# #             html: https://storage.googleapis.com/bac-gcs-production/3f41114a1d91358376c08801e30ec0526e863bc76b9a88d7d5b520465ea3017f9bd277a1c92eca148396b7d81e905a2cf7baf62a599680c6d85f60c829725c94.html
+# #             plaintext: https://storage.googleapis.com/bac-gcs-production/8db794a32001c8cdb74e097e6431914d3eb7b16c58d5b47fdb39947d1e668879a0b7353ac11f33ab29f4d0aa2384de8dff8325e23e50faa642834298c773d781.bin
+# #           subject: https://storage.googleapis.com/bac-gcs-production/f35a1944083f0d5320f8403a28871e32a8cc627df7a13a3f13dc6d269a98bebc674cf667c1710a072980bd72e774e1799af7b8b95ba38be54106577ca11bea1a.bin
+# #         sms:
+# #           body: {}
+# courier:
+#   smtp:
+#     connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+# feature_flags:
+#   cacheable_sessions: false
+#   cacheable_sessions_max_age: 2m30s
+#   faster_session_extend: true
+#   use_continue_with_transitions: true
+# # identity:
+# #   default_schema_id: 54daed6e0dc38d0981f562e0506fc90be913dbac4f3da1a45dbe34af8adb5e33e5bf02284ca2eb805e103e6d73e6e49e1d2031bb765eeab88b8f7c2c0dea04df
+# #   schemas:
+# #   - id: preset://username
+# #     url: base64://ewogICIkaWQiOiAiaHR0cHM6Ly9zY2hlbWFzLm9yeS5zaC9wcmVzZXRzL2tyYXRvcy9pZGVudGl0eS51c2VybmFtZS5zY2hlbWEuanNvbiIsCiAgIiRzY2hlbWEiOiAiaHR0cDovL2pzb24tc2NoZW1hLm9yZy9kcmFmdC0wNy9zY2hlbWEjIiwKICAidGl0bGUiOiAiUGVyc29uIiwKICAidHlwZSI6ICJvYmplY3QiLAogICJwcm9wZXJ0aWVzIjogewogICAgInRyYWl0cyI6IHsKICAgICAgInR5cGUiOiAib2JqZWN0IiwKICAgICAgInByb3BlcnRpZXMiOiB7CiAgICAgICAgInVzZXJuYW1lIjogewogICAgICAgICAgInR5cGUiOiAic3RyaW5nIiwKICAgICAgICAgICJ0aXRsZSI6ICJVc2VybmFtZSIsCiAgICAgICAgICAibWF4TGVuZ3RoIjogMTAwLAogICAgICAgICAgIm9yeS5zaC9rcmF0b3MiOiB7CiAgICAgICAgICAgICJjcmVkZW50aWFscyI6IHsKICAgICAgICAgICAgICAicGFzc3dvcmQiOiB7CiAgICAgICAgICAgICAgICAiaWRlbnRpZmllciI6IHRydWUKICAgICAgICAgICAgICB9LAogICAgICAgICAgICAgICJ3ZWJhdXRobiI6IHsKICAgICAgICAgICAgICAgICJpZGVudGlmaWVyIjogdHJ1ZQogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgInRvdHAiOiB7CiAgICAgICAgICAgICAgICAiYWNjb3VudF9uYW1lIjogdHJ1ZQogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgInBhc3NrZXkiOiB7CiAgICAgICAgICAgICAgICAiZGlzcGxheV9uYW1lIjogdHJ1ZQogICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgfQogICAgICAgIH0KICAgICAgfSwKICAgICAgInJlcXVpcmVkIjogWwogICAgICAgICJ1c2VybmFtZSIKICAgICAgXSwKICAgICAgImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjogZmFsc2UKICAgIH0KICB9Cn0K
+# #   - id: preset://email
+# #     url: base64://ewogICIkaWQiOiAiaHR0cHM6Ly9zY2hlbWFzLm9yeS5zaC9wcmVzZXRzL2tyYXRvcy9pZGVudGl0eS5lbWFpbC5zY2hlbWEuanNvbiIsCiAgIiRzY2hlbWEiOiAiaHR0cDovL2pzb24tc2NoZW1hLm9yZy9kcmFmdC0wNy9zY2hlbWEjIiwKICAidGl0bGUiOiAiUGVyc29uIiwKICAidHlwZSI6ICJvYmplY3QiLAogICJwcm9wZXJ0aWVzIjogewogICAgInRyYWl0cyI6IHsKICAgICAgInR5cGUiOiAib2JqZWN0IiwKICAgICAgInByb3BlcnRpZXMiOiB7CiAgICAgICAgImVtYWlsIjogewogICAgICAgICAgInR5cGUiOiAic3RyaW5nIiwKICAgICAgICAgICJmb3JtYXQiOiAiZW1haWwiLAogICAgICAgICAgInRpdGxlIjogIkUtTWFpbCIsCiAgICAgICAgICAib3J5LnNoL2tyYXRvcyI6IHsKICAgICAgICAgICAgImNyZWRlbnRpYWxzIjogewogICAgICAgICAgICAgICJwYXNzd29yZCI6IHsKICAgICAgICAgICAgICAgICJpZGVudGlmaWVyIjogdHJ1ZQogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgIndlYmF1dGhuIjogewogICAgICAgICAgICAgICAgImlkZW50aWZpZXIiOiB0cnVlCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAidG90cCI6IHsKICAgICAgICAgICAgICAgICJhY2NvdW50X25hbWUiOiB0cnVlCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAiY29kZSI6IHsKICAgICAgICAgICAgICAgICJpZGVudGlmaWVyIjogdHJ1ZSwKICAgICAgICAgICAgICAgICJ2aWEiOiAiZW1haWwiCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAicGFzc2tleSI6IHsKICAgICAgICAgICAgICAgICJkaXNwbGF5X25hbWUiOiB0cnVlCiAgICAgICAgICAgICAgfQogICAgICAgICAgICB9LAogICAgICAgICAgICAicmVjb3ZlcnkiOiB7CiAgICAgICAgICAgICAgInZpYSI6ICJlbWFpbCIKICAgICAgICAgICAgfSwKICAgICAgICAgICAgInZlcmlmaWNhdGlvbiI6IHsKICAgICAgICAgICAgICAidmlhIjogImVtYWlsIgogICAgICAgICAgICB9CiAgICAgICAgICB9LAogICAgICAgICAgIm1heExlbmd0aCI6IDMyMAogICAgICAgIH0KICAgICAgfSwKICAgICAgInJlcXVpcmVkIjogWwogICAgICAgICJlbWFpbCIKICAgICAgXSwKICAgICAgImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjogZmFsc2UKICAgIH0KICB9Cn0K
+# #   - id: b30c2c97eac75e0b1e03dc3d577ef875f37363abb7ea464821d7716b833e23a7b4c141e49f767b74421973fc68abab8f89f8e62b38948e2709117ca0ae8ade29
+# #     url: https://storage.googleapis.com/bac-gcs-production/b30c2c97eac75e0b1e03dc3d577ef875f37363abb7ea464821d7716b833e23a7b4c141e49f767b74421973fc68abab8f89f8e62b38948e2709117ca0ae8ade29.json
+# #   - id: 903d24e6b026df5f0800d450eb55145848a0290a129b819484cf7d14af08ce327be82586e7828dc7c88e1614a608a48551af1a6c11bf9426f3ebe2321c068cd9
+# #     url: https://storage.googleapis.com/bac-gcs-production/903d24e6b026df5f0800d450eb55145848a0290a129b819484cf7d14af08ce327be82586e7828dc7c88e1614a608a48551af1a6c11bf9426f3ebe2321c068cd9.json
+# #   - id: preset://sms
+# #     url: base64://ewogICIkaWQiOiAiaHR0cHM6Ly9zY2hlbWFzLm9yeS5zaC9wcmVzZXRzL2tyYXRvcy9pZGVudGl0eS5lbWFpbC5zY2hlbWEuanNvbiIsCiAgIiRzY2hlbWEiOiAiaHR0cDovL2pzb24tc2NoZW1hLm9yZy9kcmFmdC0wNy9zY2hlbWEjIiwKICAidGl0bGUiOiAiUGVyc29uIiwKICAidHlwZSI6ICJvYmplY3QiLAogICJwcm9wZXJ0aWVzIjogewogICAgInRyYWl0cyI6IHsKICAgICAgInR5cGUiOiAib2JqZWN0IiwKICAgICAgInByb3BlcnRpZXMiOiB7CiAgICAgICAgInBob25lX251bWJlciI6IHsKICAgICAgICAgICJ0eXBlIjogInN0cmluZyIsCiAgICAgICAgICAiZm9ybWF0IjogInRlbCIsCiAgICAgICAgICAidGl0bGUiOiAiUGhvbmUgTnVtYmVyIiwKICAgICAgICAgICJvcnkuc2gva3JhdG9zIjogewogICAgICAgICAgICAiY3JlZGVudGlhbHMiOiB7CiAgICAgICAgICAgICAgInBhc3N3b3JkIjogewogICAgICAgICAgICAgICAgImlkZW50aWZpZXIiOiB0cnVlCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAid2ViYXV0aG4iOiB7CiAgICAgICAgICAgICAgICAiaWRlbnRpZmllciI6IHRydWUKICAgICAgICAgICAgICB9LAogICAgICAgICAgICAgICJ0b3RwIjogewogICAgICAgICAgICAgICAgImFjY291bnRfbmFtZSI6IHRydWUKICAgICAgICAgICAgICB9LAogICAgICAgICAgICAgICJjb2RlIjogewogICAgICAgICAgICAgICAgImlkZW50aWZpZXIiOiB0cnVlLAogICAgICAgICAgICAgICAgInZpYSI6ICJzbXMiCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAicGFzc2tleSI6IHsKICAgICAgICAgICAgICAgICJkaXNwbGF5X25hbWUiOiB0cnVlCiAgICAgICAgICAgICAgfQogICAgICAgICAgICB9LAogICAgICAgICAgICAidmVyaWZpY2F0aW9uIjogewogICAgICAgICAgICAgICJ2aWEiOiAic21zIgogICAgICAgICAgICB9CiAgICAgICAgICB9LAogICAgICAgICAgIm1heExlbmd0aCI6IDMyMAogICAgICAgIH0KICAgICAgfSwKICAgICAgInJlcXVpcmVkIjogWwogICAgICAgICJwaG9uZV9udW1iZXIiCiAgICAgIF0sCiAgICAgICJhZGRpdGlvbmFsUHJvcGVydGllcyI6IGZhbHNlCiAgICB9CiAgfQp9Cg==
+# #   - id: 5158ce9822b018b4e958607e54b39f021dda06cc59cee52526e3312b25f98d3101ea5e296c8bcc03907ae921a9bf4e68854eb4cab2800b04222ae43916829a39
+# #     url: https://storage.googleapis.com/bac-gcs-production/5158ce9822b018b4e958607e54b39f021dda06cc59cee52526e3312b25f98d3101ea5e296c8bcc03907ae921a9bf4e68854eb4cab2800b04222ae43916829a39.json
+# #   - id: 9f11cc0fbd1d992730dbcedddf4d914c88950c45ebfbf921d05f8e1de6045f51dde0b1b0579fc65564c786890f8273705499d2c7874aaded2e3d7197edf54020
+# #     url: https://storage.googleapis.com/bac-gcs-production/9f11cc0fbd1d992730dbcedddf4d914c88950c45ebfbf921d05f8e1de6045f51dde0b1b0579fc65564c786890f8273705499d2c7874aaded2e3d7197edf54020.json
+# #   - id: ae491cfef781427b6a4e6a5127ccc0bbbb91bf2bcf2124d26a0d670b993880118aab26c0dfc3a301ca8e1a7d6524e04afbfa0ed24703783a938ab7276c418731
+# #     url: https://storage.googleapis.com/bac-gcs-production/ae491cfef781427b6a4e6a5127ccc0bbbb91bf2bcf2124d26a0d670b993880118aab26c0dfc3a301ca8e1a7d6524e04afbfa0ed24703783a938ab7276c418731.json
+# #   - id: c8cceb228f4fe2591ecbb5cd6041f587a9048729f28f0b7f99d3db15938c91ef56144cf71b44a81714829b0adfd361f7f58cf8fb216ee2ea52f6f3c8063e2981
+# #     url: https://storage.googleapis.com/bac-gcs-production/c8cceb228f4fe2591ecbb5cd6041f587a9048729f28f0b7f99d3db15938c91ef56144cf71b44a81714829b0adfd361f7f58cf8fb216ee2ea52f6f3c8063e2981.json
+# #   - id: 54daed6e0dc38d0981f562e0506fc90be913dbac4f3da1a45dbe34af8adb5e33e5bf02284ca2eb805e103e6d73e6e49e1d2031bb765eeab88b8f7c2c0dea04df
+# #     url: https://storage.googleapis.com/bac-gcs-production/54daed6e0dc38d0981f562e0506fc90be913dbac4f3da1a45dbe34af8adb5e33e5bf02284ca2eb805e103e6d73e6e49e1d2031bb765eeab88b8f7c2c0dea04df.json
+# identity:
+#   schemas:
+#     - id: default
+#       url: file:///etc/kratos/identity-schemas/service/json/person.schema.json
+#   default_schema_id: "default"
+
+# oauth2_provider:
+#   override_return_to: true
+# preview:
+#   default_read_consistency_level: strong
+# security:
+#   account_enumeration:
+#     mitigate: true
+# selfservice:
+#   allowed_return_urls:
+#     - https://nostalgic-carver-mcyw2yijqr.projects.oryapis.com
+#     - /ui/logout
+#     - /ui/consent
+#     - /ui/welcome
+#     - /ui/sessions
+#     - http://localhost:5173/error
+#     - http://localhost:5173/login
+#     - http://localhost:5173/recovery
+#     - http://localhost:5173/register
+#     - http://localhost:5173/settings
+#     - http://localhost:5173/verification
+#   default_browser_return_url: http://localhost:5173
+#   flows:
+#     error:
+#       ui_url: http://localhost:5173/error
+
+#     login:
+#       ui_url: http://localhost:5173/login
+#       lifespan: 1h
+#       style: unified
+#       before:
+#         hooks: []
+#       after:
+#         password:
+#           hooks: []
+#         oidc:
+#           hooks: []
+#         totp:
+#           hooks: []
+#         webauthn:
+#           hooks: []
+#         lookup_secret:
+#           hooks: []
+
+#     logout:
+#       after: {}
+
+#     # recovery:
+#     #   enabled: true
+#     #   lifespan: 1h
+#     #   notify_unknown_recipients: false
+#     #   ui_url: http://localhost:5173/recovery
+#     #   use: code
+#     #   before:
+#     #     hooks: []
+#     #   after:
+#     #     hooks: []
+
+#     registration:
+#       enabled: true
+#       lifespan: 1h
+#       enable_legacy_one_step: true
+#       login_hints: true
+#       ui_url: http://localhost:5173/register
+#       before:
+#         hooks: []
+#       after:
+#         password:
+#           hooks:
+#             - hook: show_verification_ui
+#         oidc:
+#           hooks:
+#             - hook: session
+#         passkey:
+#           hooks:
+#             - hook: session
+#         webauthn:
+#           hooks:
+#             - hook: session
+#         code:
+#           hooks:
+#             - hook: session
+
+#     settings:
+#       lifespan: 1h
+#       privileged_session_max_age: 15m0s
+#       required_aal: aal1
+#       ui_url: http://localhost:5173/settings
+#       before:
+#         hooks: []
+#       after:
+#         password:
+#           hooks: []
+#         profile:
+#           hooks: []
+#         totp:
+#           hooks: []
+#         webauthn:
+#           hooks: []
+#         lookup_secret:
+#           hooks: []
+#         passkey:
+#           hooks: []
+#         oidc:
+#           hooks: []
+
+#     verification:
+#       enabled: true
+#       lifespan: 1h
+#       notify_unknown_recipients: true
+#       ui_url: http://localhost:5173/verification
+#       use: code
+#       before:
+#         hooks: []
+#       after:
+#         hooks: []
+#   methods:
+#     b2b:
+#       config:
+#         organizations: []
+#     code:
+#       config:
+#         missing_credential_fallback_enabled: true
+#       mfa_enabled: true
+#     link:
+#       config:
+#         base_url: ""
+#     lookup_secret: {}
+#     oidc:
+#       config:
+#         providers: []
+#       enabled: false
+#     passkey:
+#       config:
+#         rp:
+#           display_name: temp
+#           id: nostalgic-carver-mcyw2yijqr.projects.oryapis.com
+#           origins:
+#           - https://nostalgic-carver-mcyw2yijqr.projects.oryapis.com
+#     password:
+#       config: {}
+#     profile: {}
+#     totp:
+#       config:
+#         issuer: temp
+#     webauthn:
+#       config:
+#         passwordless: false
+#         rp:
+#           display_name: temp
+#           id: nostalgic-carver-mcyw2yijqr.projects.oryapis.com
+#           origins:
+#           - https://nostalgic-carver-mcyw2yijqr.projects.oryapis.com
+
+# # serve:
+# #   admin:
+# #     base_url: https://nostalgic-carver-mcyw2yijqr.projects.oryapis.com/
+# #     request_log:
+# #       disable_for_health: true
+# #   public:
+# #     base_url: https://nostalgic-carver-mcyw2yijqr.projects.oryapis.com/
+# #     cors:
+# #       enabled: false
+# #     request_log:
+# #       disable_for_health: true
+
+# serve:
+#   public:
+#     host: 0.0.0.0
+#     port: 4433
+#     base_url: http://localhost:4433/
+#     cors:
+#       enabled: true
+#       allowed_origins:
+#         - http://localhost:5173
+#       allowed_methods:
+#         - GET
+#         - POST
+#         - PUT
+#         - PATCH
+#         - DELETE
+#       allowed_headers:
+#         - Accept
+#         - Accept-Encoding
+#         - Accept-Language
+#         - Content-Length
+#         - Content-Type
+#         - Origin
+#         - Priority
+#         - Referer
+#         - Sec-Ch-Ua
+#         - Sec-Ch-Ua-Mobile
+#         - Sec-Ch-Ua-Platform
+#         - Sec-Fetch-Dest
+#         - Sec-Fetch-Mode
+#         - Sec-Fetch-Site
+#         - Sec-Fetch-User
+#         - True-Client-Ip
+#         - User-Agent
+#         - X-Forwarded-Host
+#         - Ory-Base-Url-Rewrite
+#         - Ory-Base-Url-Rewrite-Token
+#         - X-Ory-Original-Host
+#         - Ory-No-Custom-Domain-Redirect
+#         - Authorization
+#         - Cookie
+#       exposed_headers:
+#         - Set-Cookie
+
+#   admin:
+#     host: 0.0.0.0
+#     port: 4434
+#     base_url: http://localhost:4434/
+# session:
+#   cookie:
+#     domain: nostalgic-carver-mcyw2yijqr.projects.oryapis.com
+#     name: ory_session_nostalgiccarvermcyw2yijqr
+#     path: /
+#     same_site: Lax
+#   lifespan: 72h0m0s
+#   whoami:
+#     required_aal: highest_available
+#     tokenizer:
+#       templates: {}
+
+
+
+
+
+
+# ini yang login dan register menggunakan email tanpa verifikasi, otp, forgot password, dan lain-lain(udah jalan)
+dsn: sqlite:///var/lib/kratos/kratos.db?_fk=true
+log:
+  level: debug
+  format: text
+  leak_sensitive_values: true
+clients:
+  web_hook:
+    header_allowlist:
+    - Accept
+    - Accept-Encoding
+    - Accept-Language
+    - Content-Length
+    - Content-Type
+    - Origin
+    - Priority
+    - Referer
+    - Sec-Ch-Ua
+    - Sec-Ch-Ua-Mobile
+    - Sec-Ch-Ua-Platform
+    - Sec-Fetch-Dest
+    - Sec-Fetch-Mode
+    - Sec-Fetch-Site
+    - Sec-Fetch-User
+    - True-Client-Ip
+    - User-Agent
+    - X-Forwarded-Host
+    - Ory-Base-Url-Rewrite
+    - Ory-Base-Url-Rewrite-Token
+    - X-Ory-Original-Host
+    - Ory-No-Custom-Domain-Redirect
+cookies:
+  domain: localhost
+  path: /
+  same_site: Lax
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+feature_flags:
+  cacheable_sessions: false
+  cacheable_sessions_max_age: 2m30s
+  faster_session_extend: true
+  use_continue_with_transitions: true
+identity:
+  schemas:
+    - id: default
+      url: file:///etc/kratos/identity-schemas/service/json/person.schema.json
+  default_schema_id: "default"
+oauth2_provider:
+  override_return_to: true
+preview:
+  default_read_consistency_level: strong
+security:
+  account_enumeration:
+    mitigate: true
+selfservice:
+  allowed_return_urls:
+    - http://localhost:5173
+  default_browser_return_url: http://localhost:5173
+  flows:
+    error:
+      ui_url: http://localhost:5173/error
+    login:
+      ui_url: http://localhost:5173/login
+      lifespan: 1h
+      style: unified
+      before:
+        hooks: []
+      after:
+        password:
+          hooks: []
+    logout:
+      after: {}
+    registration:
+      enabled: true
+      lifespan: 1h
+      enable_legacy_one_step: true
+      login_hints: true
+      ui_url: http://localhost:5173/register
+      before:
+        hooks: []
+      after:
+        password:
+          hooks: []
+    settings:
+      lifespan: 1h
+      privileged_session_max_age: 15m0s
+      required_aal: aal1
+      ui_url: http://localhost:5173/settings
+      before:
+        hooks: []
+      after:
+        password:
+          hooks: []
+    verification:
+      enabled: false
+  methods:
+    password:
+      config: {}
+serve:
+  public:
+    host: 0.0.0.0
+    port: 4433
+    base_url: http://localhost:4433/
+    cors:
+      enabled: true
+      allowed_origins:
+        - http://localhost:5173
+      allowed_methods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+      allowed_headers:
+        - Accept
+        - Accept-Encoding
+        - Accept-Language
+        - Content-Length
+        - Content-Type
+        - Origin
+        - Priority
+        - Referer
+        - Sec-Ch-Ua
+        - Sec-Ch-Ua-Mobile
+        - Sec-Ch-Ua-Platform
+        - Sec-Fetch-Dest
+        - Sec-Fetch-Mode
+        - Sec-Fetch-Site
+        - Sec-Fetch-User
+        - True-Client-Ip
+        - User-Agent
+        - X-Forwarded-Host
+        - Ory-Base-Url-Rewrite
+        - Ory-Base-Url-Rewrite-Token
+        - X-Ory-Original-Host
+        - Ory-No-Custom-Domain-Redirect
+        - Authorization
+        - Cookie
+      exposed_headers:
+        - Set-Cookie
+  admin:
+    host: 0.0.0.0
+    port: 4434
+    base_url: http://localhost:4434/
+session:
+  cookie:
+    domain: localhost
+    name: ory_session
+    path: /
+    same_site: Lax
+  lifespan: 72h0m0s
+  whoami:
+    required_aal: highest_available
+    tokenizer:
+      templates: {}

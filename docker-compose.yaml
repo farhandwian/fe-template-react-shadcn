@@ -1,0 +1,56 @@
+version: "3.9"
+
+networks:
+  intranet:
+    driver: bridge
+services:
+  kratos-migrate:
+    image: oryd/kratos:latest
+    depends_on:
+      - kratos
+    command: migrate sql -e --yes
+    volumes:
+      - ./kratos:/etc/config
+      - ./data:/var/lib/kratos   # ⬅️ Tambahkan ini!
+    environment:
+      - DSN=sqlite:///var/lib/kratos/kratos.db?_fk=true
+    restart: on-failure
+    networks:
+      - intranet
+  
+  kratos:
+    image: oryd/kratos:latest    # Ganti dengan versi Ory Kratos yang diinginkan
+    environment:
+      - DSN=sqlite:///var/lib/kratos/kratos.db?_fk=true
+      - SECRETS_DEFAULT=please-change-this-secret-in-production
+    volumes:
+      - ./config:/etc/kratos
+      - ./data:/var/lib/kratos
+    ports:
+      - "4433:4433"   # Port Public API Ory Kratos
+      - "4434:4434"   # Port Admin API Ory Kratos
+    # command: serve -c /etc/kratos/kratos.yml -c /etc/kratos/identity-config1.yaml --dev
+    # command: serve -c /etc/kratos/kratos.yml --dev
+    # watch-courier is set for sending verification/recovery emails
+    command: serve -c /etc/kratos/kratos.yml --dev --watch-courier
+    networks:
+      - intranet
+
+  # Layanan opsional untuk email (SMTP) development
+  # mailslurper:
+  #   image: oryd/mailslurper:latest-smtps
+  #   environment:
+  #     - MAILSLURPER_USER=test
+  #     - MAILSLURPER_PWD=test
+  #   ports:
+  #     - "4436:4436"   # Web UI MailSlurper (HTTP)
+  #     - "4437:4437"   # Web UI MailSlurper (HTTPS)
+  #     - "1025:1025"   # Port SMTP MailSlurper
+
+  mailslurper:
+    image: oryd/mailslurper:latest-smtps
+    ports:
+      - 4436:4436
+      - 4437:4437
+    networks:
+      - intranet
