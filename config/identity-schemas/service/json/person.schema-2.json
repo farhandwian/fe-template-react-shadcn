@@ -24,6 +24,9 @@
           "title": "Nomor Telepon",
           "type": "string",
           "format": "tel"
+        },"desa_id":{
+          "title": "ID Desa",
+          "type": "integer"
         }
       },
       "required": [

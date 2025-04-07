@@ -20,11 +20,18 @@
          },
          "maxLength": 320
        },
+       "nama": {
+         "title": "Nama",
+         "type": "string"
+       },
        "no_telepon": {
          "title": "Nomor Telepon",
          "type": "string",
          "format": "tel"
-       }
+       },"desa_id":{
+        "title": "ID Desa",
+        "type": "integer"
+      }
      },
      "required": [
        "email"

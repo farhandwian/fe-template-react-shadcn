@@ -395,9 +395,9 @@ feature_flags:
   use_continue_with_transitions: true
 identity:
   schemas:
-    - id: default
+    - id: bebas-cenah-mah
       url: file:///etc/kratos/identity-schemas/service/json/person.schema.json
-  default_schema_id: "default"
+  default_schema_id: "bebas-cenah-mah"
 oauth2_provider:
   override_return_to: true
 preview:
